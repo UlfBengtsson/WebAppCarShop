@@ -1,0 +1,29 @@
+﻿@model CreateCar
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<form asp-action="Create" asp-controller="Cars" method="post">
+    <label asp-for="Brand"></label>
+    <select asp-for="Brand">
+        <option value="" disabled>Select a Brand</option>
+        @foreach (string item in Model.BrandList)
+        {
+            <option value="@item">@item</option>
+        }
+    </select>
+    <span asp-validation-for="Brand"></span>
+
+    <label asp-for="ModelName"></label>
+    <input asp-for="ModelName" />
+    <span asp-validation-for="ModelName"></span>
+
+    <label asp-for="Price"></label>
+    <input asp-for="Price" />
+    <span asp-validation-for="Price"></span>
+
+    <button>Create</button>
+    <button type="reset">Reset</button>
+</form>
