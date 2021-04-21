@@ -11,11 +11,19 @@ namespace WebAppCarShop.Controllers
     public class CarsController : Controller
     {
 
-        CarService _carService = new CarService();
+        ICarService _carService = new CarService();
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View(_carService.GetAll());
+            return View(_carService.All());
+        }
+        [HttpPost]
+        public IActionResult Index(CarIndexViewModel indexViewModel)
+        {
+            indexViewModel.CarList = _carService.FindByBrand(indexViewModel.FilterText);
+
+            return View(indexViewModel);
         }
 
         [HttpGet]
@@ -28,7 +36,7 @@ namespace WebAppCarShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                _carService.AddCar(createCar);
+                _carService.Add(createCar);
 
                 return RedirectToAction(nameof(Index));
             }

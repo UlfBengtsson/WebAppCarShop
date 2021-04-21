@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppCarShop.Models.Util;
 
 namespace WebAppCarShop.Models.ViewModel
 {
@@ -15,6 +17,7 @@ namespace WebAppCarShop.Models.ViewModel
         [StringLength(100, MinimumLength = 2)]
         public string ModelName { get; set; }
 
+        [ModelBinder(BinderType = typeof( DoubleBinder))]
         [DataType(DataType.Currency)]
         public double Price { get; set; }
 

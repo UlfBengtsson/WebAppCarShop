@@ -1,4 +1,4 @@
-﻿@model List<Car>
+﻿@model CarIndexViewModel
 @{
     ViewData["Title"] = "Car Index";
 }
@@ -7,8 +7,14 @@
 
 <a asp-action="Create">Create</a>
 
+<form asp-action="Index" method="post">
+    <label asp-for="FilterText"></label>
+    <input asp-for="FilterText" />
+    <input type="submit"  value="Filter by Brand" />
+</form>
+
 <table>
-    @foreach (var item in Model)
+    @foreach (var item in Model.CarList)
 	{
     <tr>
         <td>@item.Brand</td>
