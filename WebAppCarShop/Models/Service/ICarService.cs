@@ -14,6 +14,7 @@ namespace WebAppCarShop.Models.Service
         Car FindById(int id);
         List<Car> FindByBrand(string brand);
         Car Edit(int id, CreateCar car);
+        CreateCar CarToCreateCar(Car car);
         bool Remove(int id);
     }
 }

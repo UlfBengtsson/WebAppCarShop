@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppCarShop.Models.Data;
 using WebAppCarShop.Models.Service;
 using WebAppCarShop.Models.ViewModel;
 
@@ -25,12 +26,13 @@ namespace WebAppCarShop.Controllers
 
             return View(indexViewModel);
         }
-
+         
         [HttpGet]
         public IActionResult Create()
         {
             return View(new CreateCar());
         }
+
         [HttpPost]
         public IActionResult Create(CreateCar createCar)
         {
@@ -42,6 +44,52 @@ namespace WebAppCarShop.Controllers
             }
 
             return View(createCar);
+        }
+
+        public IActionResult Details(int id)
+        {
+            Car car = _carService.FindById(id);
+
+            if (car == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return View(car);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Car car = _carService.FindById(id);
+
+            if (car == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            EditCar editCar = new EditCar();
+            editCar.Id = id;
+            editCar.CreateCar = _carService.CarToCreateCar(car);
+
+            return View(editCar);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(int id, CreateCar createCar)
+        {
+            if (ModelState.IsValid)
+            {
+                Car car = _carService.Edit(id, createCar);
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            EditCar editCar = new EditCar();
+            editCar.Id = id;
+            editCar.CreateCar = createCar;
+
+            return View(editCar);
         }
     }
 }

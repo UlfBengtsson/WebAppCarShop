@@ -14,13 +14,24 @@
 </form>
 
 <table>
-    @foreach (var item in Model.CarList)
-	{
-    <tr>
-        <td>@item.Brand</td>
-        <td>@item.ModelName</td>
-        <td>@item.Price</td>
-    </tr>
-	}
+    <thead>
+        <tr>
+            <th>Brand</th>
+            <th>Model</th>
+            <th>Price</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CarList)
+	    {
+        <tr>
+            <td>@item.Brand</td>
+            <td>@item.ModelName</td>
+            <td>@item.Price</td>
+            <td><a asp-action="Details" asp-route-id="@item.Id">Details</a></td>
+        </tr>
+	    }
+    </tbody>
     
 </table>

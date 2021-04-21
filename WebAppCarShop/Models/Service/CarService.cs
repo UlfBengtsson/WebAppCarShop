@@ -81,5 +81,16 @@ namespace WebAppCarShop.Models.Service
         {
             return _carRepo.Delete(id);
         }
+
+        public CreateCar CarToCreateCar(Car car)
+        {
+            CreateCar createCar = new CreateCar();
+
+            createCar.Brand = car.Brand;
+            createCar.ModelName = car.ModelName;
+            createCar.Price = car.Price;
+
+            return createCar;
+        }
     }
 }

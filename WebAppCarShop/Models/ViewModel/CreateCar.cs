@@ -17,7 +17,7 @@ namespace WebAppCarShop.Models.ViewModel
         [StringLength(100, MinimumLength = 2)]
         public string ModelName { get; set; }
 
-        [ModelBinder(BinderType = typeof( DoubleBinder))]
+        [ModelBinder(BinderType = typeof(DoubleBinder))]
         [DataType(DataType.Currency)]
         public double Price { get; set; }
 

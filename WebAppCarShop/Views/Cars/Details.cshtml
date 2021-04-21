@@ -1,0 +1,18 @@
+﻿@model Car
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<dl>
+    <dt>Brand</dt>
+    <dd>@Model.Brand</dd>
+    <dt>Model</dt>
+    <dd>@Model.ModelName</dd>
+    <dt>Price</dt>
+    <dd>@Model.Price</dd>
+
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+    <a asp-action="Index">Back to List</a>
+</dl>

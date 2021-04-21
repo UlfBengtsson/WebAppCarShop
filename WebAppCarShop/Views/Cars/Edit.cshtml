@@ -1,0 +1,28 @@
+﻿@model EditCar
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    <label asp-for="CreateCar.Brand"></label>
+    <select asp-for="CreateCar.Brand">
+        <option value="" disabled>Select a Brand</option>
+        @foreach (string item in Model.CreateCar.BrandList)
+        {
+            <option value="@item">@item</option>
+        }
+    </select>
+    <span asp-validation-for="CreateCar.Brand"></span>
+
+    <label asp-for="CreateCar.ModelName"></label>
+    <input asp-for="CreateCar.ModelName" />
+    <span asp-validation-for="CreateCar.ModelName"></span>
+
+    <label asp-for="CreateCar.Price"></label>
+    <input asp-for="CreateCar.Price" />
+    <span asp-validation-for="CreateCar.Price"></span>
+
+    <input type="submit" value="Save changes" />
+</form>
