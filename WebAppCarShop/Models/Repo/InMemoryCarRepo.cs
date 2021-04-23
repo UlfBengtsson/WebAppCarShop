@@ -11,6 +11,14 @@ namespace WebAppCarShop.Models.Repo
         static List<Car> carList = new List<Car>();
         static int idCounter = 0;
 
+        public InMemoryCarRepo()
+        {
+            carList.Add(new Car() {Id = 1, Brand = "Saab", ModelName = "900S", Price = 1999.99 });
+            carList.Add(new Car() {Id = 2, Brand = "Volvo", ModelName = "745", Price = 2999.99 });
+            carList.Add(new Car() {Id = 3, Brand = "BMW", ModelName = "525i", Price = 5599.99 });
+            idCounter = 3;
+        }
+
         public Car Create(Car car)
         {
             car.Id = ++idCounter;
