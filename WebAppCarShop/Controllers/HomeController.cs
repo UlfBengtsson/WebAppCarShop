@@ -6,21 +6,32 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAppCarShop.Models;
+using WebAppCarShop.Models.Data;
+using WebAppCarShop.Models.Service;
 
 namespace WebAppCarShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ICarService _carService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController()
         {
-            _logger = logger;
+            _carService = new CarService();
         }
 
         public IActionResult Index()
         {
-            return View();
+            //just for demo
+            List<Car> carList = _carService.All().CarList;
+            Car lastCar = null;
+            if(carList.Count > 0)
+            {
+                lastCar = carList[carList.Count - 1];
+            }
+            //------
+
+            return View(lastCar);
         }
 
         public IActionResult Privacy()
