@@ -26,7 +26,7 @@ namespace WebAppCarShop.Controllers
 
             return View(indexViewModel);
         }
-         
+        
         [HttpGet]
         public IActionResult Create()
         {
