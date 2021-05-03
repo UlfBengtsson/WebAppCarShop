@@ -13,11 +13,11 @@ namespace WebAppCarShop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ICarService _carService;
+        ICarService _carService;
 
-        public HomeController()
+        public HomeController(ICarService carService)
         {
-            _carService = new CarService();
+            _carService = carService;
         }
 
         public IActionResult Index()

@@ -8,8 +8,8 @@ namespace WebAppCarShop.Models.Repo
 {
     public class InMemoryCarRepo : ICarRepo
     {
-        static List<Car> carList = new List<Car>();
-        static int idCounter = 0;
+        List<Car> carList = new List<Car>();
+        int idCounter = 0;
 
         public InMemoryCarRepo()
         {

@@ -10,7 +10,12 @@ namespace WebAppCarShop.Controllers
 {
     public class ExampelController : Controller
     {
-        static readonly ICarService _carService = new CarService();
+        ICarService _carService;
+
+        public ExampelController(ICarService carService)
+        {
+            _carService = carService;
+        }
 
         public IActionResult Index()
         {

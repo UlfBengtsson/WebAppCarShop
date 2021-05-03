@@ -12,7 +12,12 @@ namespace WebAppCarShop.Controllers
     public class CarsController : Controller
     {
 
-        ICarService _carService = new CarService();
+        ICarService _carService;
+
+        public CarsController(ICarService carService)//constuctor injection
+        {
+            _carService = carService;
+        }
 
         [HttpGet]
         public IActionResult Index()

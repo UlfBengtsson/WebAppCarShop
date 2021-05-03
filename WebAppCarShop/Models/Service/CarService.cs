@@ -12,9 +12,9 @@ namespace WebAppCarShop.Models.Service
     {
         ICarRepo _carRepo;//storage for car data
 
-        public CarService()
+        public CarService(ICarRepo carRepo)
         {
-            _carRepo = new InMemoryCarRepo();
+            _carRepo = carRepo;
         }
 
         public Car Add(CreateCar createCar)
