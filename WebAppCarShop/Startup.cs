@@ -27,12 +27,19 @@ namespace WebAppCarShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //------------------------- connection to database -----------------------------------------
             services.AddDbContext<CarShopDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //------------------------- services IoC ---------------------------------------------------
             services.AddScoped<ICarService, CarService>();
+            services.AddScoped<ISaleService, SaleService>();
+
+            //------------------------- repo IoC -------------------------------------------------------
             //services.AddSingleton<ICarRepo, InMemoryCarRepo>();
             services.AddScoped<ICarRepo, DatabaseCarRepo>();
+            services.AddScoped<ISaleRepo, SaleRepo>();
+
 
             //services.AddControllersWithViews();
             services.AddMvc();

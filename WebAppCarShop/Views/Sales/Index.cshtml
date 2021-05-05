@@ -1,0 +1,33 @@
+﻿@model List<Sale>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<a asp-action="Create" >Create sale</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Seller</th>
+            <th>Buyer</th>
+            <th>Date/Time</th>
+            <th>Car</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.SellerName</td>
+                <td>@item.BuyerName</td>
+                <td>@item.TimeOfSale</td>
+                <td>@item.CarInQuestion.Brand - @item.CarInQuestion.ModelName</td>
+                <td></td>
+            </tr>
+        }
+
+    </tbody>
+</table>

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAppCarShop.Database;
 
 namespace WebAppCarShop.Migrations
 {
     [DbContext(typeof(CarShopDbContext))]
-    partial class CarShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210505091124_AddedSales")]
+    partial class AddedSales
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,7 +58,7 @@ namespace WebAppCarShop.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("CarInQuestionId")
+                    b.Property<int?>("CarInQuestionId")
                         .HasColumnType("int");
 
                     b.Property<string>("SellerName")
@@ -78,9 +80,7 @@ namespace WebAppCarShop.Migrations
                 {
                     b.HasOne("WebAppCarShop.Models.Data.Car", "CarInQuestion")
                         .WithMany()
-                        .HasForeignKey("CarInQuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CarInQuestionId");
 
                     b.Navigation("CarInQuestion");
                 });

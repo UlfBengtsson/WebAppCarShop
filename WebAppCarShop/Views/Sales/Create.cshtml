@@ -1,0 +1,27 @@
+﻿@model CreateSale
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<form asp-action="Create" method="post">
+    <label asp-for="BuyerName"></label>
+    <input asp-for="BuyerName" />
+    <span asp-validation-for="BuyerName"></span>
+
+    <label asp-for="SellerName"></label>
+    <input asp-for="SellerName" />
+    <span asp-validation-for="SellerName"></span>
+
+    <label asp-for="CarInQuestionId"></label>
+    <select asp-for="CarInQuestionId">
+        @foreach (var item in Model.CarList)
+        {
+            <option value="@item.Id">@item.Brand - @item.ModelName</option>
+        }
+    </select>
+    <span asp-validation-for="CarInQuestionId"></span>
+
+    <button>Create</button>
+</form>
