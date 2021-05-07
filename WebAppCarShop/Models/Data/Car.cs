@@ -20,5 +20,8 @@ namespace WebAppCarShop.Models.Data
         public string ModelName { get; set; }
 
         public double Price { get; set; }
+
+        //Many
+        public List<Sale> OwnerHistory { get; set; }//navi prop
     }
 }

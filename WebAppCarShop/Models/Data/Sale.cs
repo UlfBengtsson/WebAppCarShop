@@ -26,8 +26,9 @@ namespace WebAppCarShop.Models.Data
         [ForeignKey("CarInQuestion")]
         public int CarInQuestionId { get; set; }
 
+        //One
         [Required]
-        public Car CarInQuestion { get; set; }
+        public Car CarInQuestion { get; set; }//navi prop
 
     }
 }

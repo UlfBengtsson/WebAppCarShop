@@ -12,7 +12,29 @@
     <dd>@Model.ModelName</dd>
     <dt>Price</dt>
     <dd>@Model.Price</dd>
-
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
-    <a asp-action="Index">Back to List</a>
+    <dt>Action:</dt>
+    <dd>
+        <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> | 
+        <a asp-action="Index">Back to List</a>
+    </dd>
 </dl>
+
+<table>
+    <thead>
+        <tr>
+            <th>Date/Time</th>
+            <th>Seller</th>
+            <th>Buyer</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OwnerHistory)
+        {
+            <tr>
+                <td>@item.TimeOfSale</td>
+                <td>@item.SellerName</td>
+                <td>@item.BuyerName</td>
+            </tr>
+        }
+    </tbody>
+</table>

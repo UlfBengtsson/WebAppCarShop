@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebAppCarShop.Models.Data;
 using WebAppCarShop.Database;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebAppCarShop.Models.Repo
 {
@@ -37,7 +38,7 @@ namespace WebAppCarShop.Models.Repo
 
         public Car Read(int id)
         {
-            return carShopDbContext.Cars.SingleOrDefault(row => row.Id == id);//if not found it will return null
+            return carShopDbContext.Cars.Include(car => car.OwnerHistory).SingleOrDefault(row => row.Id == id);//if not found it will return null
         }
 
         public List<Car> Read()

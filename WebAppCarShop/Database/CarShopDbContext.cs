@@ -17,3 +17,10 @@ namespace WebAppCarShop.Database
 
     }
 }
+/*
+ * dotnet ef migrations add
+ * 
+ * dotnet ef database update
+ * 
+ * 
+ */
