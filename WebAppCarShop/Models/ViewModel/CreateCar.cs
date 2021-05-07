@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppCarShop.Models.Repo;
 using WebAppCarShop.Models.Util;
 
 namespace WebAppCarShop.Models.ViewModel
@@ -25,16 +26,17 @@ namespace WebAppCarShop.Models.ViewModel
 
         public CreateCar()
         {
-            BrandList = new List<String>() 
+            //Zero cunstructor is requierd for ModelBinder to work
+        }
+
+        public CreateCar(ICarBrandRepo carBrandRepo)
+        {
+            BrandList = new List<String>();
+
+            foreach (var item in carBrandRepo.Read())
             {
-                "Saab",
-                "Volvo",
-                "BMW",
-                "Opel",
-                "Volkswagen",
-                "Mazda",
-                "TVR"
-            };
+                BrandList.Add(item.Name);
+            }
         }
     }
 }

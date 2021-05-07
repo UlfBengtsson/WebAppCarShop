@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAppCarShop.Models.Data;
+using WebAppCarShop.Models.Repo;
 using WebAppCarShop.Models.Service;
 using WebAppCarShop.Models.ViewModel;
 
@@ -13,10 +14,12 @@ namespace WebAppCarShop.Controllers
     {
 
         ICarService _carService;
+        private readonly ICarBrandRepo _carBrandRepo;
 
-        public CarsController(ICarService carService)//constuctor injection
+        public CarsController(ICarService carService, ICarBrandRepo carBrandRepo)//constuctor injection
         {
             _carService = carService;
+            _carBrandRepo = carBrandRepo;
         }
 
         [HttpGet]
@@ -35,7 +38,7 @@ namespace WebAppCarShop.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View(new CreateCar());
+            return View(new CreateCar(_carBrandRepo));
         }
 
         [HttpPost]

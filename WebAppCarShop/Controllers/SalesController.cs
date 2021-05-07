@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAppCarShop.Models.Data;
 using WebAppCarShop.Models.Service;
 using WebAppCarShop.Models.ViewModel;
 
@@ -29,7 +30,14 @@ namespace WebAppCarShop.Controllers
         // GET: SalesController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            Sale sale = _saleService.FindById(id);
+
+            if (sale == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(sale);
         }
 
         // GET: SalesController/Create

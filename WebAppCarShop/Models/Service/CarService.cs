@@ -11,10 +11,12 @@ namespace WebAppCarShop.Models.Service
     public class CarService : ICarService
     {
         ICarRepo _carRepo;//storage for car data
+        ICarBrandRepo _carBrandRepo;
 
-        public CarService(ICarRepo carRepo)
+        public CarService(ICarRepo carRepo, ICarBrandRepo carBrandRepo)
         {
             _carRepo = carRepo;
+            _carBrandRepo = carBrandRepo;
         }
 
         public Car Add(CreateCar createCar)
@@ -84,7 +86,7 @@ namespace WebAppCarShop.Models.Service
 
         public CreateCar CarToCreateCar(Car car)
         {
-            CreateCar createCar = new CreateCar();
+            CreateCar createCar = new CreateCar(_carBrandRepo);
 
             createCar.Brand = car.Brand;
             createCar.ModelName = car.ModelName;

@@ -14,6 +14,7 @@ namespace WebAppCarShop.Database
 
         public DbSet<Car> Cars { get; set; }
         public DbSet<Sale> Sales { get; set; }
+        public DbSet<CarBrand> CarBrands { get; set; }
 
     }
 }

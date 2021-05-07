@@ -39,6 +39,7 @@ namespace WebAppCarShop
             //services.AddSingleton<ICarRepo, InMemoryCarRepo>();
             services.AddScoped<ICarRepo, DatabaseCarRepo>();
             services.AddScoped<ISaleRepo, SaleRepo>();
+            services.AddScoped<ICarBrandRepo, CarBrandRepo>();
 
 
             //services.AddControllersWithViews();

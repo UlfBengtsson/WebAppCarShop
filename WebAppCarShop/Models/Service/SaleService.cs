@@ -38,7 +38,18 @@ namespace WebAppCarShop.Models.Service
 
         public Sale Edit(int id, CreateSale sale)
         {
-            throw new NotImplementedException();
+            Sale saleToUpdate = FindById(id);
+
+            if (saleToUpdate == null)
+            {
+                return null;
+            }
+
+            saleToUpdate.BuyerName = sale.BuyerName;
+            saleToUpdate.SellerName = sale.SellerName;
+            saleToUpdate.CarInQuestionId = sale.CarInQuestionId;
+
+            return _saleRepo.Update(saleToUpdate);
         }
 
         public List<Sale> FindByCarId(int carId)
