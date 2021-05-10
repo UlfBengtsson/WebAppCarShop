@@ -34,12 +34,14 @@ namespace WebAppCarShop
             //------------------------- services IoC ---------------------------------------------------
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<ISaleService, SaleService>();
+            services.AddScoped<IInsuranceService, InsuranceService>();
 
             //------------------------- repo IoC -------------------------------------------------------
             //services.AddSingleton<ICarRepo, InMemoryCarRepo>();
             services.AddScoped<ICarRepo, DatabaseCarRepo>();
             services.AddScoped<ISaleRepo, SaleRepo>();
             services.AddScoped<ICarBrandRepo, CarBrandRepo>();
+            services.AddScoped<IInsuranceRepo, InsuranceRepo>();
 
 
             //services.AddControllersWithViews();

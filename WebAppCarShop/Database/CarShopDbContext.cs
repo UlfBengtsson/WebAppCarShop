@@ -12,9 +12,31 @@ namespace WebAppCarShop.Database
         public CarShopDbContext(DbContextOptions<CarShopDbContext> options) : base(options)
         { }
 
+        //Join table configured using Fluent API
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<CarInsurance>().HasKey(ci => 
+            new { 
+                ci.CarId, 
+                ci.InsuranceId
+            });
+
+            modelBuilder.Entity<CarInsurance>()
+                .HasOne<Car>(ci => ci.Car)      //ci = CarInsurance
+                .WithMany(c => c.CarInsurances)//c = Car
+                .HasForeignKey(ci => ci.CarId);
+
+            modelBuilder.Entity<CarInsurance>()
+                .HasOne<Insurance>(ci => ci.Insurance) //ci = CarInsurance
+                .WithMany(i => i.CarInsurances)         //i = Insurance
+                .HasForeignKey(ci => ci.InsuranceId);
+        }
+
         public DbSet<Car> Cars { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<CarBrand> CarBrands { get; set; }
+        public DbSet<Insurance> Insurances { get; set; }
+        public DbSet<CarInsurance> CarInsurances { get; set; }
 
     }
 }
@@ -22,6 +44,4 @@ namespace WebAppCarShop.Database
  * dotnet ef migrations add
  * 
  * dotnet ef database update
- * 
- * 
  */

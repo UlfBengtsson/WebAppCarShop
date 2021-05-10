@@ -6,23 +6,14 @@ using System.Threading.Tasks;
 
 namespace WebAppCarShop.Models.Data
 {
-    public class Car
+    public class Insurance
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(100)]
-        public string Brand { get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string ModelName { get; set; }
-
-        public double Price { get; set; }
-
-        //Many
-        public List<Sale> OwnerHistory { get; set; }//navi prop
+        [MaxLength(120)]
+        public string Name { get; set; }
 
         //Many to many join table
         public List<CarInsurance> CarInsurances { get; set; }
