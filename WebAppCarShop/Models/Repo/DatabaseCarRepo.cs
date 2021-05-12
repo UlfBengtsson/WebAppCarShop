@@ -38,7 +38,10 @@ namespace WebAppCarShop.Models.Repo
 
         public Car Read(int id)
         {
-            return carShopDbContext.Cars.Include(car => car.OwnerHistory).SingleOrDefault(row => row.Id == id);//if not found it will return null
+            return carShopDbContext.Cars.Include(car => car.OwnerHistory)
+                                        .Include(car => car.CarInsurances)
+                                            .ThenInclude(carIns => carIns.Insurance)
+                                        .SingleOrDefault(row => row.Id == id);//if not found it will return null
         }
 
         public List<Car> Read()

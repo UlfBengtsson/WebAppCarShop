@@ -1,0 +1,29 @@
+﻿@model Compeny
+@{
+    ViewData["Title"] = "ManyOptions";
+}
+
+<h1>ManyOptions</h1>
+
+<form asp-action="ManyOptions" method="post">
+
+    <input asp-for="Name"  placeholder="Name"/>
+
+    <select>
+
+        @foreach (var employee in Model.Workers)
+        {
+            @*<option disabled>--- @employee.Name ---</option>*@
+            <optgroup label="@employee.Name">
+                @foreach (var callNumber in employee.PhoneNumbers)
+                {
+                <option value="@callNumber.Id">
+                    @callNumber.NumberToCall
+                </option>
+                }
+            </optgroup>
+        }
+
+    </select>
+
+</form>

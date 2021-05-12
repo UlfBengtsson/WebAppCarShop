@@ -42,6 +42,7 @@ namespace WebAppCarShop
             services.AddScoped<ISaleRepo, SaleRepo>();
             services.AddScoped<ICarBrandRepo, CarBrandRepo>();
             services.AddScoped<IInsuranceRepo, InsuranceRepo>();
+            services.AddScoped<ICarInsuranceRepo, CarInsuranceRepo>();
 
 
             //services.AddControllersWithViews();

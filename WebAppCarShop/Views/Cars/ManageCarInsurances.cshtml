@@ -1,0 +1,37 @@
+﻿@model CarInsurancesViewModel
+@{
+    ViewData["Title"] = "Manage Car Insurances";
+}
+
+<h1>Manage Car Insurances</h1>
+
+<div class="row">
+    <div class="col-6">
+        <h4>Current</h4>
+    </div>
+    <div class="col-6">
+        <h4>Avalible</h4>
+    </div>
+</div>
+<div class="row">
+    <div class="col-6">
+        <ul>
+            @foreach (var item in Model.Car.CarInsurances)
+            {
+            <li>
+                @item.Insurance.Name  @Html.ActionLink("Remove", "RemoveInsuranceToCar", "Cars", new { carId = Model.Car.Id, insurId = item.InsuranceId })
+            </li>
+            }
+        </ul>
+    </div>
+    <div class="col-6">
+        <ul>
+            @foreach (var item in Model.Insurances)
+            {
+                <li>
+                    @item.Name @Html.ActionLink("Add", "AddInsuranceToCar" ,"Cars", new { carId = Model.Car.Id, insurId = item.Id })
+                </li>
+            }
+        </ul>
+    </div>
+</div>

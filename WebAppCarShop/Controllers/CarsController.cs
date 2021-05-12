@@ -14,11 +14,15 @@ namespace WebAppCarShop.Controllers
     {
 
         ICarService _carService;
+        private readonly IInsuranceService _insuranceService;
+        private readonly ICarInsuranceRepo _carInsuranceRepo;
         private readonly ICarBrandRepo _carBrandRepo;
 
-        public CarsController(ICarService carService, ICarBrandRepo carBrandRepo)//constuctor injection
+        public CarsController(ICarService carService, IInsuranceService insuranceService, ICarInsuranceRepo carInsuranceRepo, ICarBrandRepo carBrandRepo)//constuctor injection
         {
             _carService = carService;
+            _insuranceService = insuranceService;
+            _carInsuranceRepo = carInsuranceRepo;
             _carBrandRepo = carBrandRepo;
         }
 
@@ -64,6 +68,56 @@ namespace WebAppCarShop.Controllers
             }
 
             return View(car);
+        }
+
+        [HttpGet]
+        public IActionResult ManageCarInsurances(int id)
+        {
+            Car car = _carService.FindById(id);
+
+            if (car == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            CarInsurancesViewModel vm = new CarInsurancesViewModel();
+            vm.Car = car;
+            vm.Insurances = _insuranceService.All();
+
+            return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult AddInsuranceToCar(int carId, int insurId)
+        {
+            Car car = _carService.FindById(carId);
+
+            if (car == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            CarInsurance carInsurance = _carInsuranceRepo.Create(
+                new CarInsurance() { CarId = carId, InsuranceId = insurId }
+            );
+
+
+            return RedirectToAction("ManageCarInsurances", new { id = carId });
+        }
+
+        [HttpGet]
+        public IActionResult RemoveInsuranceToCar(int carId, int insurId)
+        {
+            Car car = _carService.FindById(carId);
+
+            if (car == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            _carInsuranceRepo.Delete(carId, insurId);
+
+            return RedirectToAction("ManageCarInsurances", new { id = carId });
         }
 
         [HttpGet]
