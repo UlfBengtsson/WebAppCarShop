@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,11 @@ namespace WebAppCarShop
             //------------------------- connection to database -----------------------------------------
             services.AddDbContext<CarShopDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            //------------------------- Identity -------------------------------------------------------
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                        .AddEntityFrameworkStores<CarShopDbContext>()
+                        .AddDefaultTokenProviders();
 
             //------------------------- services IoC ---------------------------------------------------
             services.AddScoped<ICarService, CarService>();
@@ -66,7 +72,8 @@ namespace WebAppCarShop
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();// Add this - are you login?
+            app.UseAuthorization();// Add this too - do you have the right to do it?
 
             app.UseEndpoints(endpoints =>
             {
