@@ -1,0 +1,31 @@
+﻿@model List<IdentityUser>
+@{
+    ViewData["Title"] = "UserList";
+}
+
+<h1>UserList</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>UserName</th>
+            <th>Email</th>
+            <th>Failed</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.Email</td>
+                <td>@item.AccessFailedCount</td>
+                <td>
+                    <a asp-action="Details" asp-controller="Admin" asp-route-id="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

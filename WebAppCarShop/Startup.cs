@@ -37,6 +37,11 @@ namespace WebAppCarShop
                         .AddEntityFrameworkStores<CarShopDbContext>()
                         .AddDefaultTokenProviders();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Account/AccessDenied";
+            });
+
             //------------------------- services IoC ---------------------------------------------------
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<ISaleService, SaleService>();
