@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using WebAppCarShop.Models.ViewModel;
 
 namespace WebAppCarShop.Controllers
 {
+    [Authorize(Roles = "Admin, SalesEmployee")]
     public class SalesController : Controller
     {
         private readonly ISaleService _saleService;
