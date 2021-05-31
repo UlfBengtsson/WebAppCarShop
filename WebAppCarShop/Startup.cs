@@ -55,6 +55,19 @@ namespace WebAppCarShop
             services.AddScoped<IInsuranceRepo, InsuranceRepo>();
             services.AddScoped<ICarInsuranceRepo, CarInsuranceRepo>();
 
+            //------------------------- CORS -----------------------------------------------------------
+
+            services.AddCors(options =>
+            {
+
+                options.AddPolicy("ReactPolicy",
+                    builder =>
+                    {
+                        builder.WithOrigins("*")// "*" is like saying any and all are okay
+                                            .AllowAnyHeader()
+                                            .AllowAnyMethod();
+                    });
+            });
 
             //services.AddControllersWithViews();
             services.AddMvc();
@@ -74,8 +87,10 @@ namespace WebAppCarShop
             }
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            
             app.UseRouting();
+
+            app.UseCors();
 
             app.UseAuthentication();// Add this - are you login?
             app.UseAuthorization();// Add this too - do you have the right to do it?
