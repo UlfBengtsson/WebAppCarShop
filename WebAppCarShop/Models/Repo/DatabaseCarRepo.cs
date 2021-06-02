@@ -33,7 +33,22 @@ namespace WebAppCarShop.Models.Repo
 
         public bool Delete(int id)
         {
-            throw new NotImplementedException();
+            Car car = Read(id);
+
+            if (car == null)
+            {
+                return false;
+            }
+            carShopDbContext.Cars.Remove(car);
+
+            int result = carShopDbContext.SaveChanges();
+
+            if (result == 0)//no changes in the database
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public Car Read(int id)
