@@ -63,7 +63,7 @@ namespace WebAppCarShop
                 options.AddPolicy("ReactPolicy",
                     builder =>
                     {
-                        builder.WithOrigins("*")// "*" is like saying any and all are okay
+                        builder.WithOrigins("http://localhost:3000")// "*" is like saying any and all are okay
                                             .AllowAnyHeader()
                                             .AllowAnyMethod();
                     });

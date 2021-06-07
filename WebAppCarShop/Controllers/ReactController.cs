@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebAppCarShop.Models.Data;
+using WebAppCarShop.Models.Repo;
 using WebAppCarShop.Models.Service;
 using WebAppCarShop.Models.ViewModel;
 
@@ -17,10 +18,12 @@ namespace WebAppCarShop.Controllers
     public class ReactController : ControllerBase
     {
         private readonly ICarService _carService;
+        private readonly ICarBrandRepo _brandRepo;
 
-        public ReactController(ICarService carService)
+        public ReactController(ICarService carService, ICarBrandRepo brandRepo)
         {
             _carService = carService;
+            _brandRepo = brandRepo;
         }
 
         [HttpGet]
@@ -33,7 +36,20 @@ namespace WebAppCarShop.Controllers
         [HttpGet("{id}")]
         public Car GetById(int id)
         {
-            return _carService.FindById(id);
+            Car car = _carService.FindById(id);
+
+            foreach (Sale sale in car.OwnerHistory)
+            {
+                sale.CarInQuestion = null;
+            }
+
+            foreach (CarInsurance carIns in car.CarInsurances)
+            {
+                carIns.Car = null;
+                carIns.Insurance.CarInsurances = null;
+            }
+
+            return car;
         }
 
         [HttpPost]
@@ -59,6 +75,14 @@ namespace WebAppCarShop.Controllers
             {
                 Response.StatusCode = 400;
             }
+        }
+
+        //----------------------------------- Brand ------------------------------------------------------
+
+        [HttpGet("Brands")]
+        public List<CarBrand> GetBrands()
+        {
+            return _brandRepo.Read();
         }
     }
 }

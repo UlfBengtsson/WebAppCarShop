@@ -66,7 +66,16 @@ namespace WebAppCarShop.Models.Repo
 
         public Car Update(Car car)
         {
-            throw new NotImplementedException();
+            carShopDbContext.Cars.Update(car);
+
+            int result = carShopDbContext.SaveChanges();
+
+            if (result == 0)//no changes in the database
+            {
+                throw new Exception("unable to update car in database.");
+            }
+
+            return car;
         }
     }
 }
