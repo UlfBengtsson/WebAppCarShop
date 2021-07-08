@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,9 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using WebAppCarShop.Database;
 using WebAppCarShop.Models.Repo;
@@ -42,7 +45,28 @@ namespace WebAppCarShop
                 options.AccessDeniedPath = "/Account/AccessDenied";
             });
 
-            //------------------------- services IoC ---------------------------------------------------
+            //------------------------- JWT -------------------------------------------------------------
+
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(jwtOption => 
+                {
+                    jwtOption.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateActor = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = Configuration["JWTConfiguration:Issuer"],
+                        ValidAudience = Configuration["JWTConfiguration:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(
+                            Encoding.UTF8.GetBytes(Configuration["JWTConfiguration:SigningKey"]))
+                    };
+                }
+            );
+
+            //------------------------- services IoC --------------------------------------------------- 
             services.AddScoped<ICarService, CarService>();
             services.AddScoped<ISaleService, SaleService>();
             services.AddScoped<IInsuranceService, InsuranceService>();
