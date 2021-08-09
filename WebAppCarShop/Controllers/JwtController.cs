@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -46,9 +47,10 @@ namespace WebAppCarShop.Controllers
                 {
                     return Unauthorized();
                 }
-                IdentityUser user = await _userManager.GetUserAsync(User);
+                IdentityUser user = await _userManager.FindByNameAsync(jwtLogin.UserName);
+                IList<string> userRoles = await _userManager.GetRolesAsync(user);
                 //ToDo token gen
-                JwtSecurityToken jwtTokenData = await GenerateJwtToken(user);
+                JwtSecurityToken jwtTokenData = await GenerateJwtToken(user, userRoles);
 
                 JwtToken jwtToken = new JwtToken() { Token = new JwtSecurityTokenHandler().WriteToken(jwtTokenData) };
 
@@ -57,9 +59,26 @@ namespace WebAppCarShop.Controllers
             return BadRequest(ModelState);
         }
 
-        private async Task<JwtSecurityToken> GenerateJwtToken(IdentityUser user)
+        [HttpGet]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Test()
+        {
+            return Ok("It works");
+        }
+
+        private async Task<JwtSecurityToken> GenerateJwtToken(IdentityUser user, IList<string> userRoles)
         {
             List<Claim> claims = User.Claims.ToList();
+
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, user.UserName));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            claims.Add(new Claim(ClaimTypes.Name, user.UserName));
+
+            foreach (var role in userRoles)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
 
             int expiraionDays = _configuration.GetValue<int>("JWTConfiguration:TokenExpirationDays");
             byte[] signingKey = Encoding.UTF8.GetBytes(_configuration.GetValue<string>("JWTConfiguration:SigningKey"));

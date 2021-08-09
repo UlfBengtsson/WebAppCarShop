@@ -1,21 +1,23 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using System.Threading.Tasks;
 using WebAppCarShop.Database;
 using WebAppCarShop.Models.Repo;
 using WebAppCarShop.Models.Service;
+using WebAppCarShop.Swagger;
 
 namespace WebAppCarShop
 {
@@ -31,6 +33,7 @@ namespace WebAppCarShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             //------------------------- connection to database -----------------------------------------
             services.AddDbContext<CarShopDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -42,22 +45,28 @@ namespace WebAppCarShop
 
             services.ConfigureApplicationCookie(options =>
             {
-                options.AccessDeniedPath = "/Account/AccessDenied";
+                // Cookie settings  
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+                options.LoginPath = "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login  
+                options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout  
+                options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied  
+                options.SlidingExpiration = true;
             });
+
 
             //------------------------- JWT -------------------------------------------------------------
 
-            services.AddAuthentication(option =>
-            {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(jwtOption => 
+            services.AddAuthentication()
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOption => 
                 {
+                    jwtOption.SaveToken = true;
                     jwtOption.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateActor = true,
                         ValidateAudience = true,
                         ValidateLifetime = true,
+                        ClockSkew = TimeSpan.FromMinutes(5),
                         ValidIssuer = Configuration["JWTConfiguration:Issuer"],
                         ValidAudience = Configuration["JWTConfiguration:Audience"],
                         IssuerSigningKey = new SymmetricSecurityKey(
@@ -65,6 +74,7 @@ namespace WebAppCarShop
                     };
                 }
             );
+
 
             //------------------------- services IoC --------------------------------------------------- 
             services.AddScoped<ICarService, CarService>();
@@ -83,7 +93,6 @@ namespace WebAppCarShop
 
             services.AddCors(options =>
             {
-
                 options.AddPolicy("ReactPolicy",
                     builder =>
                     {
@@ -94,10 +103,14 @@ namespace WebAppCarShop
             });
 
             //------------------------ Swagger ----------------------------------------------------------
+            //Made a class to contain the bigger part of the settings to lessen bloting
+            SwaggerModel.SwaggerSetup(services, new OpenApiInfo()
+            {
+                Version = "v1",
+                Title = "Car Shop API",
+                Description = "ASP.NET Core 3.1 with API"
+            });
 
-            services.AddSwaggerGen();
-
-            //services.AddControllersWithViews();
             services.AddMvc();
         }
 
