@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using WebAppCarShop.Database;
 using WebAppCarShop.Models.Repo;
@@ -75,6 +76,16 @@ namespace WebAppCarShop
                 }
             );
 
+            services.AddAuthorization(config => {
+
+                config.AddPolicy("ShouldContainRoleAdmin", options =>
+                {
+                    options.RequireAuthenticatedUser();
+                    options.AuthenticationSchemes.Add(JwtBearerDefaults.AuthenticationScheme);
+                    options.RequireClaim(ClaimTypes.Role, "Admin");
+                } 
+                );
+            });
 
             //------------------------- services IoC --------------------------------------------------- 
             services.AddScoped<ICarService, CarService>();

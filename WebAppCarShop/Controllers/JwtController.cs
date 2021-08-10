@@ -85,7 +85,7 @@ namespace WebAppCarShop.Controllers
             JwtSecurityToken jwtSecurityToken = new JwtSecurityToken(
                 issuer: _configuration.GetValue<string>("JWTConfiguration:Issuer"),
                 audience: _configuration.GetValue<string>("JWTConfiguration:Audience"),
-                claims: User.Claims,
+                claims: claims,
                 expires: DateTime.UtcNow.AddDays(expiraionDays),
                 notBefore: DateTime.UtcNow,
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(signingKey), SecurityAlgorithms.HmacSha256)

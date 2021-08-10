@@ -31,7 +31,6 @@ namespace WebAppCarShop.Controllers
         [HttpGet]
         public List<Car> Get()
         {
-            //Response.StatusCode = 418;//Im a Tea Pot
             return _carService.All().CarList;
         }
 
@@ -67,7 +66,7 @@ namespace WebAppCarShop.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public void Delete(int id)
         {
             if (_carService.Remove(id))
